@@ -449,3 +449,5 @@
 .hero-cooking .l1 i{--r:0deg !important;animation-duration:3.2s}
 .hero-cooking .dots{letter-spacing:.08em}
 @media (max-width:767px){.hero .title.title{top:60%}.hero .title .hero-cooking{font-size:30px;letter-spacing:.1em}}
+/* hidden background-music player (controlled from the Road So Far turntable) */
+.xp-music{position:fixed;left:-10000px;top:0;width:200px;height:200px;overflow:hidden;opacity:0;pointer-events:none}

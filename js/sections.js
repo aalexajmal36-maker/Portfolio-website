@@ -76,27 +76,71 @@
     detail.style.setProperty("--tc", j.color);
     detail.innerHTML = `<h3>${esc(j.role)}</h3><p class="meta"><strong>${esc(j.co)}</strong> · ${esc(j.yr)} · ${esc(j.loc)}</p><ul>${j.items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
     detail.classList.remove("swap"); void detail.offsetWidth; detail.classList.add("swap");
-    arm.style.setProperty("--arm", `${14 + i * 3.4}deg`);
+    arm.style.setProperty("--arm", `${26 + i * 4}deg`);
     rec.setAttribute("aria-valuenow", i + 1); rec.setAttribute("aria-valuetext", `${j.side}: ${j.co}`);
   };
   const loop = (t) => { const dt = Math.min(t - last, 50); last = t; if (!drag) { ang += dt * 0.2; paint(); } raf = requestAnimationFrame(loop); };
   const sync = () => { const on = playing && visible && !still; if (on && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); } if (!on && raf) { cancelAnimationFrame(raf); raf = 0; } };
-  const setPlay = (on) => { playing = on; play.setAttribute("aria-pressed", on); play.querySelector("span").textContent = on ? "Pause" : "Play"; sec.classList.toggle("playing", on); sync(); };
+  // Background music (YouTube, hidden player) follows the deck: Play/Pause button, a tap on the record, Space/Enter on it.
+  const MUSIC = "Efew326rte0";
+  let yt = null, ytReady = false, pending = false, held = false;
+  const setPlay = (on) => {
+    playing = on; play.setAttribute("aria-pressed", on); play.querySelector("span").textContent = on ? "Pause" : "Play"; sec.classList.toggle("playing", on); sync();
+    if (on) pending = false;
+    if (ytReady) { try { on ? yt.playVideo() : yt.pauseVideo(); } catch (e) {} }
+  };
+  const loadYT = () => new Promise((res) => {
+    if (window.YT && YT.Player) return res();
+    const prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
+    const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.async = true; document.head.appendChild(s);
+  });
+  const startMusic = () => {
+    const box = document.createElement("div"); box.className = "xp-music"; box.setAttribute("aria-hidden", "true");
+    const slot = document.createElement("div"); box.appendChild(slot); document.body.appendChild(box);
+    setPlay(true);
+    loadYT().then(() => {
+      yt = new YT.Player(slot, {
+        host: "https://www.youtube-nocookie.com", videoId: MUSIC, width: 200, height: 200,
+        playerVars: { autoplay: 1, loop: 1, playlist: MUSIC, controls: 0, disablekb: 1, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
+        events: {
+          onReady: (e) => {
+            ytReady = true; e.target.setVolume(55); const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Background music"; }
+            if (playing) e.target.playVideo(); else e.target.pauseVideo();
+            // the browser blocked sound before any click: show the deck as paused and start on the first click/key anywhere
+            setTimeout(() => { if (playing && yt.getPlayerState() !== 1) { setPlay(false); pending = true; } }, 2000);
+          },
+          onStateChange: (e) => { if (e.data === 1 && !playing) yt.pauseVideo(); }
+        }
+      });
+    }).catch(() => {});
+  };
+  const firstGesture = (e) => {
+    if (!pending) return;
+    if (e.target && e.target.closest && e.target.closest("#xpPlay,#xpRecord,.vg-tile")) { pending = false; return; }
+    setPlay(true);
+  };
+  addEventListener("pointerdown", firstGesture, true); addEventListener("keydown", firstGesture, true);
+  if (document.readyState === "complete") startMusic(); else addEventListener("load", startMusic, { once: true });
+  // pause the music while a Brand Ads video is open, resume after
+  addEventListener("site:video-open", () => { if (playing) { held = true; setPlay(false); } });
+  addEventListener("site:video-close", () => { if (held) { held = false; setPlay(true); } });
   play.addEventListener("click", () => setPlay(!playing));
   tracks.forEach((t) => t.addEventListener("click", () => pick(+t.dataset.i)));
   const angleOf = (e) => { const b = rec.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
-  rec.addEventListener("pointerdown", (e) => { drag = true; rec.setPointerCapture(e.pointerId); prev = angleOf(e); acc = 0; });
+  let tot = 0, dx = 0, dy = 0;
+  rec.addEventListener("pointerdown", (e) => { drag = true; rec.setPointerCapture(e.pointerId); prev = angleOf(e); acc = 0; tot = 0; dx = e.clientX; dy = e.clientY; });
   rec.addEventListener("pointermove", (e) => {
     if (!drag) return; const a = angleOf(e); let d = a - prev; if (d > 180) d -= 360; else if (d < -180) d += 360;
-    prev = a; ang += d; acc += d; paint();
+    prev = a; ang += d; acc += d; tot += Math.abs(d); paint();
     if (acc > 150) { acc = 0; pick(cur + 1); } else if (acc < -150) { acc = 0; pick(cur - 1); }
   });
-  const end = () => { drag = false; }; rec.addEventListener("pointerup", end); rec.addEventListener("pointercancel", end);
+  rec.addEventListener("pointerup", (e) => { const tap = drag && tot < 8 && Math.hypot(e.clientX - dx, e.clientY - dy) < 8; drag = false; if (tap) setPlay(!playing); });
+  rec.addEventListener("pointercancel", () => { drag = false; });
   rec.addEventListener("keydown", (e) => {
     const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
     if (d) { e.preventDefault(); ang += 40 * d; paint(); pick(cur + d); } else if (e.key === " " || e.key === "Enter") { e.preventDefault(); setPlay(!playing); }
   });
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !sec.dataset.autoplayed && !still) { sec.dataset.autoplayed = "1"; setPlay(true); } sync(); }, { threshold: 0.25 }).observe(sec);
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.25 }).observe(sec);
   pick(0);
 })();
 
@@ -193,7 +237,7 @@
   document.body.appendChild(m);
   const frame = m.querySelector(".vg-frame"), cap = m.querySelector(".vg-cap");
   let last = null;
-  const close = () => { m.classList.remove("is-open"); const f = frame.querySelector("iframe"); if (f) f.remove(); if (window.lenis && lenis.start) lenis.start(); if (last) last.focus(); };
+  const close = () => { if (m.classList.contains("is-open")) dispatchEvent(new Event("site:video-close")); m.classList.remove("is-open"); const f = frame.querySelector("iframe"); if (f) f.remove(); if (window.lenis && lenis.start) lenis.start(); if (last) last.focus(); };
   tiles.forEach((t) => t.addEventListener("click", () => {
     last = t;
     m.dataset.shape = t.dataset.shape || "tall";
@@ -202,7 +246,7 @@
     f.src = "https://www.youtube-nocookie.com/embed/" + t.dataset.yt + "?autoplay=1&rel=0&playsinline=1";
     f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true; f.title = cap.textContent;
     frame.prepend(f);
-    m.classList.add("is-open");
+    m.classList.add("is-open"); dispatchEvent(new Event("site:video-open"));
     if (window.lenis && lenis.stop) lenis.stop();
     m.querySelector(".vg-close").focus();
   }));
