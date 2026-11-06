@@ -452,3 +452,4 @@
 /* hidden background-music player (controlled from the Road So Far turntable) */
 .xp-music{position:fixed;left:-10000px;top:0;width:200px;height:200px;overflow:hidden;opacity:0;pointer-events:none}
 .about-ajmal .content p+p{margin-top:.9em}
+.about-ajmal .content p{text-transform:none;font-weight:400;line-height:1.55}.about-ajmal .content .about-lead{font-weight:600;font-size:1.15em;line-height:1.4;color:#fff}
