@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact • Ajmal Hasnain</title>
+<style>
+@import url(css/fonts.css);
+:root{
+  --bg:#0b0d12; --line:#2c3242;
+  /* dark slatted background drawn in CSS */
+  --grime:linear-gradient(transparent,transparent);
+  --rust:linear-gradient(transparent,transparent);
+  --tex-shutter:repeating-linear-gradient(180deg,#14161c 0 34px,#0c0d11 34px 38px);
+  --ribs:repeating-linear-gradient(180deg,#11141b 0 2px,#2a303c 2px 4px,#20252f 4px 11px,#171b23 11px 18px,#0b0d12 18px 20px,#1b1f28 20px 22px); --cream:#f2f0e8; --muted:#a8a69c; --muted-2:#7d7b73;
+  --lime:#dafd2c; /* accent yellow */ --card:#f3f1ea; --field:#1c1c19; --ink:#141412;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#07080b;color:var(--cream);font-family:"Archivo",system-ui,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.frame{position:relative;margin:14px 12px;min-height:calc(100vh - 28px);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 18% 0%,rgba(255,177,43,.08),transparent 60%),
+    radial-gradient(ellipse 120% 80% at 50% 120%,rgba(0,0,0,.65),transparent 70%),
+    var(--grime),var(--rust),
+    repeating-linear-gradient(90deg,transparent 0 calc(33.33% - 2px),rgba(0,0,0,.35) calc(33.33% - 2px) 33.33%),
+    linear-gradient(180deg,#090b10ee,#090b10f6),
+    var(--tex-shutter) 0 0 / 900px auto repeat,
+    var(--ribs)}
+/* rotating sunburst behind the content */
+.rays{position:absolute;left:50%;top:50%;width:300vmax;height:300vmax;margin:-150vmax 0 0 -150vmax;z-index:0;pointer-events:none;opacity:.07;
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.6) 0,rgba(255,255,255,.35) 6%,rgba(255,255,255,0) 22%),
+    repeating-conic-gradient(from 0deg,#f4f4f4 0deg 4deg,#d4d4d4 4deg 7deg,#efefef 7deg 11deg,#dcdcdc 11deg 12.5deg,#f6f6f6 12.5deg 17deg,#cfcfcf 17deg 20deg);
+  animation:rays-spin 90s linear infinite}
+@keyframes rays-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.rays{animation:none}}
+.frame > .top,.frame > .main{position:relative;z-index:1}
+/* film grain, as on the main site */
+.grain{position:fixed;inset:0;z-index:90;pointer-events:none;background:url\(\"data\:image\/svg\+xml\,\%3Csvg\ xmlns\=\'http\:\/\/www\.w3\.org\/2000\/svg\'\ width\=\'180\'\ height\=\'180\'\%3E\%3Cfilter\ id\=\'n\'\%3E\%3CfeTurbulence\ type\=\'fractalNoise\'\ baseFrequency\=\'\.9\'\ numOctaves\=\'2\'\ stitchTiles\=\'stitch\'\/\%3E\%3CfeColorMatrix\ values\=\'0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ \.09\ 0\'\/\%3E\%3C\/filter\%3E\%3Crect\ width\=\'100\%25\'\ height\=\'100\%25\'\ filter\=\'url\(\%23n\)\'\/\%3E\%3C\/svg\%3E\"\) 0 0 / 180px 180px repeat}
+.wrap{max-width:1412px;margin:0 auto;padding:0 32px}
+
+/* header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:flex;align-items:baseline;gap:9px}
+.brand b{font-family:"Bungee",sans-serif;font-weight:400;font-size:18px;letter-spacing:.01em}
+.brand span{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:40px;font-size:15px;color:#d8d6cd}
+.nav a:hover{color:var(--cream)}
+.nav a.on{padding:3px 3px;border:1.5px solid var(--cream);border-radius:3px;color:var(--cream)}
+
+/* layout */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 640px;gap:64px;padding-top:28px;padding-bottom:28px;align-items:start}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.26em;color:var(--lime);margin:4px 0 22px}
+h1{margin:0;font-family:"Bungee",sans-serif;font-weight:400;font-size:66px;line-height:1;letter-spacing:-.01em}
+.lede{margin:34px 0 0;max-width:450px;font-size:16px;line-height:1.66;color:#cfcdc4}
+
+.contacts{list-style:none;margin:48px 0 0;padding:0;display:grid;gap:20px}
+.contacts li{display:flex;align-items:center;gap:15px;font-size:15px;font-weight:600}
+.ico{flex:none;display:grid;place-items:center;width:44px;height:44px;border:1px solid #3b3b36;border-radius:50%;color:#d9d7ce}
+.ico svg{width:17px;height:17px}
+.contacts a:hover{color:var(--lime)}
+
+.else{margin-top:46px}
+.else .eyebrow{color:var(--muted);margin-bottom:18px}
+.social{display:flex;gap:12px}
+.social a:hover .ico{border-color:var(--lime);color:var(--lime)}
+
+/* form card */
+.card{position:relative;margin-top:2px;background:var(--card);color:var(--ink);border-radius:14px;padding:46px 40px 40px}
+.sticker{position:absolute;top:-20px;right:-12px;background:var(--lime);color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.2em;padding:9px 16px;transform:rotate(-3deg);box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.field{display:block;margin-bottom:30px}
+.field span{display:block;font-size:12px;font-weight:700;letter-spacing:.2em;margin-bottom:12px}
+.field input,.field textarea{width:100%;border:0;outline:0;border-radius:10px;background:var(--field);color:var(--cream);font:inherit;font-size:14px;padding:14px 16px;transition:box-shadow .2s}
+.field input{height:46px}
+.field textarea{height:146px;resize:vertical;line-height:1.5}
+.field ::placeholder{color:#8d8b83}
+.field input:focus,.field textarea:focus{box-shadow:0 0 0 3px var(--lime)}
+.send{margin-top:2px;width:100%;height:48px;border:0;border-radius:999px;background:var(--lime);color:var(--ink);font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:transform .15s,filter .15s}
+.send:hover{filter:brightness(.95)}
+.send:active{transform:scale(.99)}
+.send svg{width:17px;height:17px}
+.note{margin:22px 0 0;text-align:center;font-size:12px;color:#7a786f}
+.err{display:none;margin:10px 0 0;text-align:center;font-size:13px;color:#b3261e}
+
+@media (max-width:1100px){
+  .main{grid-template-columns:1fr;gap:56px}
+  .card{max-width:640px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .nav{gap:16px;font-size:13px}
+  .brand span{display:none}
+  h1{font-size:52px}
+  .card{padding:40px 22px 28px}
+  .sticker{right:6px}
+}
+/* display type: caps, tight */
+h1,h2,.brand b{text-transform:uppercase;letter-spacing:-.02em}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="frame">
+  <div class="rays" aria-hidden="true"></div>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html"><b>Ajmal Hasnain</b><span>[ VISUAL &amp; MOTION DESIGN ]</span></a>
+      <nav class="nav">
+        <a href="index.html#about-me">About Me</a>
+        <a href="resume.html">Resume</a>
+        <a href="index.html#projects">Projects</a>
+        <a class="on" href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <section>
+      <p class="eyebrow">CONTACT</p>
+      <h1>Let's make<br>it move</h1>
+      <p class="lede">Tell me about the brand, the story, and where it needs to land — a film, a launch, social or a product. I reply within two working days — usually faster when a deadline is involved.</p>
+
+      <ul class="contacts">
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></span><a href="mailto:aalexajmal36@gmail.com">aalexajmal36@gmail.com</a></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><a href="tel:+918448324638">+91 84483 24638</a></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>New Delhi, India</span></li>
+      </ul>
+
+      <div class="else">
+        <p class="eyebrow">ELSEWHERE</p>
+        <div class="social">
+          <a href="https://www.linkedin.com/in/ajmal-hasnain36/" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v7M7 7v.01M11 17v-7M11 13.5c0-2 1.2-3.5 3-3.5s3 1.2 3 3.5V17"/></svg></span></a>
+          <a href="https://www.youtube.com/@design.walebhaiya" target="_blank" rel="noopener" aria-label="YouTube"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9.2 5 2.8-5 2.8z"/></svg></span></a>
+          <a href="https://www.instagram.com/design.walebhaiya/" target="_blank" rel="noopener" aria-label="Instagram"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><path d="M16.8 7.2v.01"/></svg></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Send a brief">
+      <form id="brief" novalidate>
+        <label class="field"><span>YOUR NAME</span><input name="name" placeholder="Ada Lovelace" autocomplete="name"></label>
+        <label class="field"><span>EMAIL</span><input name="email" type="email" placeholder="ada@company.com" autocomplete="email"></label>
+        <label class="field"><span>THE BRIEF</span><textarea name="brief" placeholder="What are you making — a brand film, explainer, launch campaign or motion system?"></textarea></label>
+        <button class="send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4z"/></svg>Send the brief</button>
+        <p class="err" id="err">Please add your name and a short brief.</p>
+        <p class="note">This opens your email client with the message pre-filled — nothing is stored on this site.</p>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script>
+// Builds a mailto: link from the form; nothing is sent to or stored on a server.
+const TO = "aalexajmal36@gmail.com";
+document.getElementById("brief").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const f = e.target, name = f.name.value.trim(), email = f.email.value.trim(), brief = f.brief.value.trim();
+  const err = document.getElementById("err");
+  if (!name || !brief) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  const subject = "Brief from " + name;
+  const body = brief + "\n\n— " + name + (email ? " (" + email + ")" : "");
+  location.href = "mailto:" + TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+});
+</script>
+</body>
+</html>

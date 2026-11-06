@@ -1,0 +1,22 @@
+/* Fonts (all open-licensed, self-hosted): Rubik 900 = display, Poppins = text, Permanent Marker = accent.
+   The section CSS refers to the display face as "fatfrank" and the text face as "din-condensed"; those names are local aliases. */
+@font-face{font-family:"fatfrank";src:url(../fonts/rubik-900.woff2) format("woff2");font-weight:100 1000;font-style:normal;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-300.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-600.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-700.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-800.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"Poppins";src:url(../fonts/poppins-900.woff2) format("woff2");font-weight:900;font-display:swap}
+@font-face{font-family:"din-condensed";src:url(../fonts/poppins-300.woff2) format("woff2");font-weight:100 349;font-display:swap}
+@font-face{font-family:"din-condensed";src:url(../fonts/poppins-400.woff2) format("woff2");font-weight:350 449;font-display:swap}
+@font-face{font-family:"din-condensed";src:url(../fonts/poppins-500.woff2) format("woff2");font-weight:450 549;font-display:swap}
+@font-face{font-family:"din-condensed";src:url(../fonts/poppins-600.woff2) format("woff2");font-weight:550 649;font-display:swap}
+@font-face{font-family:"din-condensed";src:url(../fonts/poppins-700.woff2) format("woff2");font-weight:650 1000;font-display:swap}
+@font-face{font-family:"Permanent Marker";src:url(../fonts/permanent-marker-latin.woff2) format("woff2");font-weight:400;font-display:swap}
+/* names used by the contact and resume pages */
+@font-face{font-family:"Bungee";src:url(../fonts/rubik-900.woff2) format("woff2");font-weight:100 1000;font-display:swap}
+@font-face{font-family:"FatFrank";src:url(../fonts/rubik-900.woff2) format("woff2");font-weight:100 1000;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../fonts/poppins-400.woff2) format("woff2");font-weight:100 449;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../fonts/poppins-600.woff2) format("woff2");font-weight:450 649;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../fonts/poppins-800.woff2) format("woff2");font-weight:650 1000;font-display:swap}

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume • Ajmal Hasnain</title>
+<meta name="description" content="Resume of Ajmal Hasnain, visual, motion and product designer: 7+ years across B2B, B2C and SaaS.">
+<style>
+@import url(css/fonts.css);
+:root{
+  --line:#2c3242; --cream:#f2f0e8; --muted:#a8a69c; --muted-2:#7d7b73; --accent:#dafd2c; --ink:#141412;
+  --grime:linear-gradient(transparent,transparent); --rust:linear-gradient(transparent,transparent); --tex-shutter:repeating-linear-gradient(180deg,#14161c 0 34px,#0c0d11 34px 38px);
+  --ribs:repeating-linear-gradient(180deg,#11141b 0 2px,#2a303c 2px 4px,#20252f 4px 11px,#171b23 11px 18px,#0b0d12 18px 20px,#1b1f28 20px 22px);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#07080b;color:var(--cream);font-family:"Archivo",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-synthesis:none}
+a{color:inherit;text-decoration:none}
+/* same framed, textured page as contact.html */
+.frame{position:relative;margin:14px 12px;min-height:calc(100vh - 28px);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 18% 0%,rgba(255,177,43,.08),transparent 60%),radial-gradient(ellipse 120% 80% at 50% 120%,rgba(0,0,0,.65),transparent 70%),
+    var(--grime),var(--rust),repeating-linear-gradient(90deg,transparent 0 calc(33.33% - 2px),rgba(0,0,0,.35) calc(33.33% - 2px) 33.33%),
+    linear-gradient(180deg,#090b10ee,#090b10f6),var(--tex-shutter) 0 0 / 900px auto repeat,var(--ribs)}
+.rays{position:absolute;left:50%;top:40vh;width:300vmax;height:300vmax;margin:-150vmax 0 0 -150vmax;z-index:0;pointer-events:none;opacity:.07;
+  background:radial-gradient(circle at center,rgba(255,255,255,.6) 0,rgba(255,255,255,.35) 6%,rgba(255,255,255,0) 22%),
+    repeating-conic-gradient(from 0deg,#f4f4f4 0deg 4deg,#d4d4d4 4deg 7deg,#efefef 7deg 11deg,#dcdcdc 11deg 12.5deg,#f6f6f6 12.5deg 17deg,#cfcfcf 17deg 20deg);
+  animation:rays-spin 90s linear infinite}
+@keyframes rays-spin{to{transform:rotate(360deg)}}
+.grain{position:fixed;inset:0;z-index:90;pointer-events:none;background:url\(\"data\:image\/svg\+xml\,\%3Csvg\ xmlns\=\'http\:\/\/www\.w3\.org\/2000\/svg\'\ width\=\'180\'\ height\=\'180\'\%3E\%3Cfilter\ id\=\'n\'\%3E\%3CfeTurbulence\ type\=\'fractalNoise\'\ baseFrequency\=\'\.9\'\ numOctaves\=\'2\'\ stitchTiles\=\'stitch\'\/\%3E\%3CfeColorMatrix\ values\=\'0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ 0\ 1\ 0\ 0\ 0\ \.09\ 0\'\/\%3E\%3C\/filter\%3E\%3Crect\ width\=\'100\%25\'\ height\=\'100\%25\'\ filter\=\'url\(\%23n\)\'\/\%3E\%3C\/svg\%3E\"\) 0 0 / 180px 180px repeat}
+.frame > *:not(.rays){position:relative;z-index:1}
+.wrap{max-width:1412px;margin:0 auto;padding:0 32px}
+
+/* header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:flex;align-items:baseline;gap:9px}
+.brand b{font-family:"Bungee",sans-serif;font-weight:400;font-size:18px;letter-spacing:.01em}
+.brand span{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:40px;font-size:15px;color:#d8d6cd}
+.nav a{position:relative;padding:4px 0}
+.nav a:hover{color:var(--cream)}
+.nav a.on{color:var(--cream)}
+.nav a.on:after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent)}
+
+/* title row */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding-top:84px}
+.eyebrow{margin:0 0 18px;font-size:12px;font-weight:700;letter-spacing:.26em;color:var(--accent)}
+h1{margin:0;font-family:"Bungee",sans-serif;font-weight:400;font-size:clamp(48px,5.4vw,78px);line-height:1;letter-spacing:-.01em}
+.cv{flex:none;display:inline-flex;align-items:center;gap:9px;height:48px;padding:0 26px;margin-bottom:6px;border-radius:999px;background:var(--accent);color:var(--ink);font-size:15px;font-weight:700;transition:transform .15s,filter .15s}
+.cv:hover{filter:brightness(.95)}
+.cv:active{transform:scale(.98)}
+.cv svg{width:17px;height:17px}
+
+/* two columns */
+.cols{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:54px;padding:62px 32px 90px}
+h2{margin:0 0 20px;font-family:"Bungee",sans-serif;font-weight:400;font-size:21px;color:var(--accent);letter-spacing:.01em}
+aside section + section{margin-top:56px}
+.profile p{margin:0;font-size:15px;line-height:1.7;color:#cfcdc4}
+.loc{display:flex;align-items:center;gap:8px;margin-top:18px;font-size:14px;color:#cfcdc4}
+.loc svg{width:16px;height:16px;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.chips li{padding:7px 13px;border:1px solid #3b3b36;border-radius:999px;font-size:12.5px;color:#e4e2d9;transition:border-color .2s,color .2s}
+.chips li:hover{border-color:var(--accent);color:var(--accent)}
+.edu{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.edu b{display:block;font-size:14.5px;font-weight:700}
+.edu span{display:block;margin-top:3px;font-size:12.5px;color:var(--muted)}
+.kit{list-style:none;margin:0;padding:0}
+.kit li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid #2a2a26;font-size:14px}
+.kit li b{font-weight:600}
+.kit li span{text-align:right;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+
+/* experience timeline */
+.jobs{list-style:none;margin:0;padding:0;border-top:1px solid #2a2a26}
+.job{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:40px 13px 38px;border-bottom:1px solid #2a2a26}
+.when b{display:block;font-size:13.5px;font-weight:700;color:var(--accent)}
+.when span{display:block;margin-top:6px;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.job h3{margin:0;font-family:"FatFrank","Bungee",sans-serif;font-weight:400;font-size:25px;letter-spacing:-.01em;line-height:1.15;text-transform:uppercase}
+.org{margin-top:5px;font-size:14px;font-weight:600;color:#cfcdc4}
+.ctx{margin-top:3px;font-size:12.5px;font-style:italic;color:var(--muted-2)}
+.job p{margin:16px 0 0;max-width:600px;font-size:14.5px;line-height:1.7;color:#b9b7ae}
+.job p b{color:var(--cream);font-weight:700}
+
+/* footer */
+.foot{border-top:1px solid var(--line)}
+.foot .wrap{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;padding-top:44px;padding-bottom:48px;font-size:13.5px;color:#cfcdc4}
+.foot .stack{display:grid;gap:9px;align-content:start}
+.foot a{text-decoration:underline;text-decoration-color:#55534c;text-underline-offset:4px}
+.foot a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+.foot .soc a{display:inline-flex;align-items:center;gap:8px}
+.foot .soc svg{width:15px;height:15px}
+.foot .end{text-align:right}
+.foot .end em{font-style:normal;color:var(--accent)}
+
+/* scroll reveal (as in the reference) */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rays{animation:none}.reveal{opacity:1;transform:none;transition:none}}
+
+@media (max-width:1000px){
+  .cols{grid-template-columns:1fr;gap:64px}
+  .foot .wrap{grid-template-columns:1fr 1fr}
+  .foot .end{text-align:left}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .cols{padding:44px 18px 70px}
+  .nav{gap:16px;font-size:13px}
+  .brand span{display:none}
+  .head{flex-direction:column;align-items:flex-start;padding-top:52px}
+  .job{grid-template-columns:1fr;gap:10px;padding:30px 0}
+  .foot .wrap{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff;color:#111}.frame{background:none;border:0;margin:0}.rays,.grain,.cv,.nav{display:none}
+  .reveal{opacity:1;transform:none}.job p,.profile p,.chips li,.edu span,.kit li span,.org{color:#333}h1,h2,.when b{color:#111}
+}
+/* display type: caps, tight */
+h1,h2,.brand b{text-transform:uppercase;letter-spacing:-.02em}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="frame">
+  <div class="rays" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html"><b>Ajmal Hasnain</b><span>[ VISUAL &amp; MOTION DESIGN ]</span></a>
+      <nav class="nav">
+        <a href="index.html#about-me">About Me</a>
+        <a class="on" href="resume.html" aria-current="page">Resume</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap head reveal">
+      <div>
+        <p class="eyebrow">RESUME</p>
+        <h1>The road<br>so far</h1>
+      </div>
+      <a class="cv" href="Ajmal_Hasnain_Resume.pdf" target="_blank" rel="noopener" download="Ajmal_Hasnain_Resume.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14"/></svg>Download CV</a>
+    </div>
+
+    <div class="wrap cols">
+      <aside>
+        <section class="profile reveal">
+          <h2>Profile</h2>
+          <p>Most design work gets remembered for two things: how it felt, and how it scaled. 7+ years in motion, brand and product design across B2B, B2C and SaaS. I design fintech flows, performance creative and design systems for 1M+ users in Tier-2/3 India, and I use AI-assisted workflows so a small team can ship at scale.</p>
+          <div class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>New Delhi, India</div>
+        </section>
+
+        <section class="reveal">
+          <h2>Skills</h2>
+          <ul class="chips">
+            <li>Product Design</li><li>User Research</li><li>Usability Analysis</li><li>Design Systems</li><li>Data-Driven Design</li>
+            <li>Visual Design</li><li>Brand Systems</li><li>Creative Direction</li><li>Motion Design &amp; Storytelling</li>
+            <li>Sound Design</li><li>Visual Effects</li><li>AI-Assisted Workflows</li>
+          </ul>
+        </section>
+
+        <section class="reveal">
+          <h2>Education</h2>
+          <ul class="edu">
+            <li><b>Design Thinking</b><span>IIT Delhi CE — 2025</span></li>
+            <li><b>UI/UX</b><span>Coursera — 2023</span></li>
+            <li><b>Bachelor's</b><span>Vinoba Bhave University — 2021</span></li>
+            <li><b>Motion &amp; Design</b><span>Arena Animation — 2020</span></li>
+          </ul>
+        </section>
+
+        <section class="reveal">
+          <h2>Toolkit</h2>
+          <ul class="kit">
+            <li><b>Design</b><span>Figma · Photoshop · Illustrator</span></li>
+            <li><b>Motion</b><span>After Effects · Premiere Pro · Lottie · Rive</span></li>
+            <li><b>AI</b><span>Nano Banana · Midjourney · ChatGPT · Claude</span></li>
+          </ul>
+        </section>
+      </aside>
+
+      <section>
+        <h2 class="reveal">Experience</h2>
+        <ol class="jobs">
+          <li class="job reveal">
+            <div class="when"><b>2023 — 2026</b><span>Gurugram</span></div>
+            <div>
+              <h3>Lead Design Analyst (Visual + Product Design)</h3>
+              <div class="org">Wiom</div>
+              <div class="ctx">Affordable home-internet provider for Tier-2/3 India</div>
+              <p>Designed the wallet-to-bank transfer flow end-to-end, lifting completion from <b>60% to 95%</b>. Led concepting and scripting for performance ads, driving lead growth from <b>15% to 60% in 90 days</b>. Built a design system across web and mobile that cut dev time by <b>30%</b>, and led team-wide adoption of an AI-powered design system that cut creative production time by <b>80%</b>. Owned brand and communication strategy reaching <b>1M+ users</b> across India, and produced AI-generated training videos to speed up internal onboarding.</p>
+            </div>
+          </li>
+          <li class="job reveal">
+            <div class="when"><b>2021 — 2023</b><span>Noida</span></div>
+            <div>
+              <h3>Sr. Motion &amp; Graphic Designer</h3>
+              <div class="org">MyClassroom</div>
+              <div class="ctx">EdTech platform</div>
+              <p>Tripled the online lead rate, from <b>5% to 15%</b>, through campaign and digital creative. Partnered with the Brand Head on <b>5 major campaigns</b> that raised brand awareness across platforms, cut time to market for branding deliverables by <b>15%</b>, and led and mentored a team of designers.</p>
+            </div>
+          </li>
+          <li class="job reveal">
+            <div class="when"><b>2019 — 2021</b><span>New Delhi</span></div>
+            <div>
+              <h3>Graphic Designer</h3>
+              <div class="org">Xpress Minds</div>
+              <div class="ctx">Creative and branding agency</div>
+              <p>Managed end-to-end branding across all visuals, raising campaign success rates by <b>30%</b>, and designed <b>50+ visual storytelling assets</b> for client campaigns.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="stack"><a href="contact.html">Contact</a><a href="Ajmal_Hasnain_Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a></div>
+      <div class="stack"><a href="mailto:aalexajmal36@gmail.com">aalexajmal36@gmail.com</a><a href="tel:+918448324638">+91 84483 24638</a></div>
+      <div class="stack soc">
+        <a href="https://www.linkedin.com/in/ajmal-hasnain36/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v7M7 7v.01M11 17v-7M11 13.5c0-2 1.2-3.5 3-3.5s3 1.2 3 3.5V17"/></svg>LinkedIn</a>
+        <a href="https://www.youtube.com/@design.walebhaiya" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9.2 5 2.8-5 2.8z"/></svg>YouTube</a>
+        <a href="https://www.instagram.com/design.walebhaiya/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><path d="M16.8 7.2v.01"/></svg>Instagram</a>
+      </div>
+      <div class="stack end"><span>© 2026 Ajmal Hasnain.</span><span>Designed with motion, systems and a <em>good brief</em>.</span></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// fade sections up as they scroll into view
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+document.querySelectorAll(".reveal").forEach((el, i) => { el.style.transitionDelay = (Math.min(i, 4) * 60) + "ms"; io.observe(el); });
+</script>
+</body>
+</html>
