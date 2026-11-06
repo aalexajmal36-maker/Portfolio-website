@@ -211,3 +211,7 @@ body.loaded>main{animation:page-in 1.9s linear 1.75s both}
 /* headline 50px lower */
 .statement-text .statement{transform:translateY(50px)}
 .statement-text .statement[data-scroll]:not(.inview){transform:translateY(90px)}
+/* Design/Motion frame: no bottom rule; side strokes run down to the running strip below */
+.subscribe-cta .corners .x-lines:after{display:none}
+.subscribe-cta .corners .y-lines:before,.subscribe-cta .corners .y-lines:after{bottom:-16px}
+@media (min-width:768px){.subscribe-cta .corners .y-lines:before,.subscribe-cta .corners .y-lines:after{bottom:-32px}}
