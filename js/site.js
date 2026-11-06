@@ -47,11 +47,3 @@
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
   new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on && !raf) raf = requestAnimationFrame(frame); }).observe(sec);
 })();
-
-// Design/Motion frame: the top rule starts and ends the same distance from the DESIGN and MOTION labels.
-(() => {
-  const c = document.querySelector(".subscribe-cta .corners"); if (!c) return;
-  const tl = c.querySelector(".c-tl"), tr = c.querySelector(".c-tr"); if (!tl || !tr) return;
-  const fit = () => { const g = innerWidth < 768 ? 14 : 20; c.style.setProperty("--xl", tl.offsetWidth + g + "px"); c.style.setProperty("--xr", tr.offsetWidth + g + "px"); };
-  fit(); addEventListener("resize", fit); addEventListener("load", fit); if (document.fonts) document.fonts.ready.then(fit);
-})();

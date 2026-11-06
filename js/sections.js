@@ -109,7 +109,7 @@
             // the browser blocked sound before any click: show the deck as paused and start on the first click/key anywhere
             setTimeout(() => { if (playing && yt.getPlayerState() !== 1) { setPlay(false); pending = true; } }, 2000);
           },
-          onStateChange: (e) => { if (e.data === 1 && !playing) yt.pauseVideo(); }
+          onStateChange: (e) => { if (e.data === 1 && !playing && !drag) yt.pauseVideo(); }
         }
       });
     }).catch(() => {});
@@ -127,15 +127,33 @@
   play.addEventListener("click", () => setPlay(!playing));
   tracks.forEach((t) => t.addEventListener("click", () => pick(+t.dataset.i)));
   const angleOf = (e) => { const b = rec.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
-  let tot = 0, dx = 0, dy = 0;
-  rec.addEventListener("pointerdown", (e) => { drag = true; rec.setPointerCapture(e.pointerId); prev = angleOf(e); acc = 0; tot = 0; dx = e.clientX; dy = e.clientY; });
+  // DJ hands: holding the record stops it and the music; dragging it scratches the track back or forward;
+  // let go and it plays on from there. A quick tap still toggles play/pause.
+  const SEC_PER_TURN = 3;
+  let tot = 0, dx = 0, dy = 0, t0 = 0, scrub = 0, lastSeek = 0, idle = 0;
+  const ytOk = () => ytReady && yt && yt.seekTo;
+  const scratch = () => {
+    const now = performance.now(); if (now - lastSeek < 90) return; lastSeek = now;
+    try { yt.seekTo(scrub, true); yt.playVideo(); } catch (e) {}
+    clearTimeout(idle); idle = setTimeout(() => { if (drag && ytOk()) yt.pauseVideo(); }, 140);
+  };
+  rec.addEventListener("pointerdown", (e) => {
+    drag = true; rec.setPointerCapture(e.pointerId); prev = angleOf(e); acc = 0; tot = 0; dx = e.clientX; dy = e.clientY; t0 = performance.now();
+    if (ytOk()) { try { scrub = yt.getCurrentTime() || 0; yt.pauseVideo(); } catch (err) {} }
+  });
   rec.addEventListener("pointermove", (e) => {
     if (!drag) return; const a = angleOf(e); let d = a - prev; if (d > 180) d -= 360; else if (d < -180) d += 360;
     prev = a; ang += d; acc += d; tot += Math.abs(d); paint();
-    if (acc > 150) { acc = 0; pick(cur + 1); } else if (acc < -150) { acc = 0; pick(cur - 1); }
+    if (ytOk() && Math.abs(d) > 0.2) { const len = yt.getDuration ? yt.getDuration() : 0; scrub = Math.max(0, scrub + (d / 360) * SEC_PER_TURN); if (len) scrub = Math.min(scrub, len - 0.5); scratch(); }
+    if (acc > 300) { acc = 0; pick(cur + 1); } else if (acc < -300) { acc = 0; pick(cur - 1); }
   });
-  rec.addEventListener("pointerup", (e) => { const tap = drag && tot < 8 && Math.hypot(e.clientX - dx, e.clientY - dy) < 8; drag = false; if (tap) setPlay(!playing); });
-  rec.addEventListener("pointercancel", () => { drag = false; });
+  rec.addEventListener("pointerup", (e) => {
+    if (!drag) return; drag = false; clearTimeout(idle);
+    const tap = tot < 8 && Math.hypot(e.clientX - dx, e.clientY - dy) < 8 && performance.now() - t0 < 350;
+    if (tap) { setPlay(!playing); return; }
+    if (ytOk()) { try { yt.seekTo(scrub, true); playing ? yt.playVideo() : yt.pauseVideo(); } catch (err) {} }
+  });
+  rec.addEventListener("pointercancel", () => { drag = false; clearTimeout(idle); if (ytOk()) { try { playing ? yt.playVideo() : yt.pauseVideo(); } catch (err) {} } });
   rec.addEventListener("keydown", (e) => {
     const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
     if (d) { e.preventDefault(); ang += 40 * d; paint(); pick(cur + d); } else if (e.key === " " || e.key === "Enter") { e.preventDefault(); setPlay(!playing); }
