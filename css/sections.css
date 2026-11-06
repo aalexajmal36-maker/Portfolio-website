@@ -419,3 +419,10 @@
 /* stage background without a photo: dark with a soft yellow glow; wavy lines lightened so they read on dark */
 .hire-stage{background:radial-gradient(ellipse 70% 60% at 50% 38%,#2b3110 0%,#141414 55%,#0a0a0a 100%)}
 .hire-lines{filter:invert(1);opacity:.14}
+
+/* keep the giant scrolling WORK letters inside the Work section so they do not run into The Road So Far */
+.work-g .text-marquee{bottom:0;transform:none;overflow:hidden}
+
+/* turntable label: AH logo instead of text */
+.xp-label{background:none !important}
+.xp-label .xp-ah{display:block;width:100%;height:100%;pointer-events:none;user-select:none}

@@ -72,7 +72,7 @@
     i = (i + jobs.length) % jobs.length; if (i === cur) return; cur = i; const j = jobs[i];
     tracks.forEach((t, k) => t.setAttribute("aria-current", String(k === i)));
     label.style.setProperty("--lbl", j.color);
-    label.innerHTML = `<span class="s">${esc(j.side)}</span><span class="c">${esc(j.co)}</span><span class="y">${esc(j.yr.replace(/\s*—\s*/, "–"))}</span><span class="h"></span>`;
+    if (!label.firstChild) label.innerHTML = `<img class="xp-ah" src="img/ah-disc.svg" alt="" draggable="false">`;
     detail.style.setProperty("--tc", j.color);
     detail.innerHTML = `<h3>${esc(j.role)}</h3><p class="meta"><strong>${esc(j.co)}</strong> · ${esc(j.yr)} · ${esc(j.loc)}</p><ul>${j.items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
     detail.classList.remove("swap"); void detail.offsetWidth; detail.classList.add("swap");
@@ -113,33 +113,16 @@
 })();
 
 
-// Let's Work Together stage: the cursor leaves a soft trail that reveals a yellow/black halftone version of
-// Ajmal's own cut-out (generated here from img/ajmal-cutout.webp, so no extra artwork is needed).
+// Let's Work Together stage: the cursor leaves a soft trail that reveals Ajmal in a racing helmet
+// (img/ajmal-helmet.webp: same width and top edge as img/ajmal-cutout.webp, so it lines up when drawn top-aligned).
 (() => {
   const stage = document.querySelector(".hire-stage"); if (!stage) return;
   const person = stage.querySelector(".hire-person"), cv = stage.querySelector(".hire-helmet"), ctx = cv.getContext("2d");
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let last = 0, visible = false, raf = 0, pts = [], dpr = 1, art = null;
   const mask = document.createElement("canvas"), mctx = mask.getContext("2d");
-  // halftone duotone of the cut-out: dots sized by darkness, yellow on black, alpha kept from the photo
-  const makeArt = () => {
-    const w = person.naturalWidth, h = person.naturalHeight; if (!w) return;
-    const src = document.createElement("canvas"); src.width = w; src.height = h;
-    const s = src.getContext("2d"); s.drawImage(person, 0, 0);
-    const d = s.getImageData(0, 0, w, h).data;
-    const out = document.createElement("canvas"); out.width = w; out.height = h;
-    const o = out.getContext("2d"); const step = Math.max(6, Math.round(w / 150));
-    o.fillStyle = "#dafd2c";
-    for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) {
-      const i = ((y + (step >> 1)) * w + (x + (step >> 1))) * 4; if (i >= d.length || d[i + 3] < 40) continue;
-      const lum = (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) / 255;
-      o.globalCompositeOperation = "source-over";
-      o.fillStyle = "#000"; o.fillRect(x, y, step, step);
-      const r = (step / 2) * Math.min(1, 0.15 + lum * 1.15);
-      o.fillStyle = "#dafd2c"; o.beginPath(); o.arc(x + step / 2, y + step / 2, r, 0, Math.PI * 2); o.fill();
-    }
-    art = out;
-  };
+  const helmet = new Image(); helmet.decoding = "async";
+  const makeArt = () => { if (!art) { helmet.onload = () => { art = helmet; }; helmet.src = "img/ajmal-helmet.webp"; } };
   const size = () => { dpr = Math.min(devicePixelRatio || 1, 2); cv.width = mask.width = stage.clientWidth * dpr; cv.height = mask.height = stage.clientHeight * dpr; };
   const draw = (t) => {
     ctx.clearRect(0, 0, cv.width, cv.height);
@@ -155,7 +138,7 @@
     }
     const pr = person.getBoundingClientRect(), sr = stage.getBoundingClientRect();
     ctx.save(); ctx.drawImage(mask, 0, 0); ctx.globalCompositeOperation = "source-in";
-    ctx.drawImage(art, (pr.left - sr.left) * dpr, (pr.top - sr.top) * dpr, pr.width * dpr, pr.height * dpr);
+    ctx.drawImage(art, (pr.left - sr.left) * dpr, (pr.top - sr.top) * dpr, pr.width * dpr, pr.width * (art.naturalHeight / art.naturalWidth) * dpr);
     ctx.restore();
   };
   const step = (t) => { last = t; draw(t); raf = visible ? requestAnimationFrame(step) : 0; };
