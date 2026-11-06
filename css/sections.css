@@ -443,3 +443,9 @@
 @keyframes cook-dot{0%,60%,100%{transform:translateY(0);opacity:1}30%{transform:translateY(-.25em);opacity:.35}}
 @media (max-width:767px){.hero{padding-bottom:150px}.hero-img img{object-position:50% 30%}}
 @media (prefers-reduced-motion:reduce){.hero-img img,.hero-cooking .dots s{animation:none}}
+/* lighter "Cooking..." sitting at chest height */
+.hero .title.title{position:absolute;left:0;right:0;top:57%;transform:translateY(-50%);z-index:2}
+.hero .title .hero-cooking{font-family:"Poppins",sans-serif;font-weight:300;font-size:clamp(30px,3.6vw,68px);letter-spacing:.14em;line-height:1;-webkit-text-stroke:0;filter:none;text-shadow:0 0 2px rgba(0,0,0,.9),0 2px 10px rgba(0,0,0,.85),0 0 30px rgba(0,0,0,.7)}
+.hero-cooking .l1 i{--r:0deg !important;animation-duration:3.2s}
+.hero-cooking .dots{letter-spacing:.08em}
+@media (max-width:767px){.hero .title.title{top:60%}.hero .title .hero-cooking{font-size:30px;letter-spacing:.1em}}
