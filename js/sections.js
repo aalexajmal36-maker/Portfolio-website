@@ -271,3 +271,48 @@
   m.addEventListener("click", (e) => { if (e.target === m || e.target.closest(".vg-close")) close(); });
   addEventListener("keydown", (e) => { if (e.key === "Escape" && m.classList.contains("is-open")) close(); });
 })();
+
+// Behance projects open in a full-screen viewer on this site instead of leaving for behance.net.
+(() => {
+  const data = window.PROJECTS, base = window.PROJECT_IMG; if (!data) return;
+  const links = [...document.querySelectorAll('a[href*="behance.net/gallery/"]')]; if (!links.length) return;
+  const m = document.createElement("div");
+  m.className = "pj-modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-label", "Project");
+  m.innerHTML = '<div class="pj-bar"><p class="pj-title"></p><button type="button" class="pj-close" aria-label="Close project">&#10005;</button></div><div class="pj-body" tabindex="-1"><div class="pj-inner"></div></div>';
+  document.body.appendChild(m);
+  const body = m.querySelector(".pj-body"), inner = m.querySelector(".pj-inner"), title = m.querySelector(".pj-title"), closeBtn = m.querySelector(".pj-close");
+  let last = null, pushed = false;
+  const img = (path, alt) => { const i = new Image(); i.src = base + path; i.alt = alt; i.loading = "lazy"; i.decoding = "async"; i.referrerPolicy = "no-referrer"; return i; };
+  const build = (p) => {
+    inner.textContent = "";
+    p.mods.forEach(([type, val]) => {
+      if (type === "i") inner.appendChild(img(val, p.name));
+      else if (type === "g") { const g = document.createElement("div"); g.className = "pj-grid"; val.forEach((v) => g.appendChild(img(v, p.name))); inner.appendChild(g); }
+      else if (type === "t") { const t = document.createElement("p"); t.className = "pj-text"; t.textContent = val; inner.appendChild(t); }
+      else if (type === "v") { const w = document.createElement("div"); w.className = "pj-video"; const f = document.createElement("iframe"); f.src = val; f.title = p.name; f.loading = "lazy"; f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true; w.appendChild(f); inner.appendChild(w); }
+    });
+  };
+  const shut = () => {
+    if (!m.classList.contains("is-open")) return;
+    m.classList.remove("is-open"); inner.textContent = ""; // clearing also stops any playing video
+    document.documentElement.style.overflow = ""; dispatchEvent(new Event("site:video-close"));
+    if (last) last.focus({ preventScroll: true });
+  };
+  const close = () => { if (pushed) { pushed = false; history.back(); } shut(); };
+  links.forEach((a) => {
+    const id = (a.href.match(/gallery\/(\d+)/) || [])[1]; if (!id || !data[id]) return;
+    a.removeAttribute("target");
+    a.addEventListener("click", (e) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+      e.preventDefault(); last = a;
+      title.textContent = data[id].name; build(data[id]);
+      m.classList.add("is-open"); body.scrollTop = 0; document.documentElement.style.overflow = "hidden";
+      dispatchEvent(new Event("site:video-open"));
+      history.pushState({ pj: 1 }, ""); pushed = true; // the phone's back button closes the project, not the site
+      closeBtn.focus();
+    });
+  });
+  closeBtn.addEventListener("click", close);
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && m.classList.contains("is-open")) close(); });
+  addEventListener("popstate", () => { if (m.classList.contains("is-open")) { pushed = false; shut(); } });
+})();
