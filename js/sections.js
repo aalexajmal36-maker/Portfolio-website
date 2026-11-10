@@ -299,13 +299,21 @@
     if (last) last.focus({ preventScroll: true });
   };
   const close = () => { if (pushed) { pushed = false; history.back(); } shut(); };
+  // YouTube rows play in the same viewer: one video, starting right away
+  document.querySelectorAll('a.wl-row[href*="youtu.be/"], a.wl-row[href*="youtube.com/watch"]').forEach((a) => {
+    const yt = (a.href.match(/youtu\.be\/([\w-]{6,})/) || a.href.match(/[?&]v=([\w-]{6,})/) || [])[1]; if (!yt) return;
+    const name = a.querySelector(".wl-title");
+    links.push(a); a.dataset.pj = "yt-" + yt;
+    data["yt-" + yt] = { name: name ? name.textContent : "Video", mods: [["v", "https://www.youtube-nocookie.com/embed/" + yt + "?autoplay=1&rel=0&playsinline=1"]] };
+  });
   links.forEach((a) => {
-    const id = (a.href.match(/gallery\/(\d+)/) || [])[1]; if (!id || !data[id]) return;
+    const id = a.dataset.pj || (a.href.match(/gallery\/(\d+)/) || [])[1]; if (!id || !data[id]) return;
     a.removeAttribute("target");
     a.addEventListener("click", (e) => {
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
       e.preventDefault(); last = a;
       title.textContent = data[id].name; build(data[id]);
+      m.classList.toggle("pj-solo", id.startsWith("yt-"));
       m.classList.add("is-open"); body.scrollTop = 0; document.documentElement.style.overflow = "hidden";
       dispatchEvent(new Event("site:video-open"));
       history.pushState({ pj: 1 }, ""); pushed = true; // the phone's back button closes the project, not the site
