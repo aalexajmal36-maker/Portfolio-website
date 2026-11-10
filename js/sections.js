@@ -290,11 +290,51 @@
       else if (type === "g") { const g = document.createElement("div"); g.className = "pj-grid"; val.forEach((v) => g.appendChild(img(v, p.name))); inner.appendChild(g); }
       else if (type === "t") { const t = document.createElement("p"); t.className = "pj-text"; t.textContent = val; inner.appendChild(t); }
       else if (type === "v") { const w = document.createElement("div"); w.className = "pj-video"; const f = document.createElement("iframe"); f.src = val; f.title = p.name; f.loading = "lazy"; f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true; w.appendChild(f); inner.appendChild(w); }
+      else if (type === "b") inner.appendChild(book(val, p.name));
     });
+  };
+  // Flipbook: spreads split into left/right pages; each sheet carries a right page on its front and the next left page
+  // on its back, and turns around the spine. Click/tap a page side, swipe, or use the arrow keys.
+  let turn = null;
+  const book = (cfg, alt) => {
+    const pages = [];
+    for (let i = 1; i <= cfg.count; i++) { const n = String(i).padStart(2, "0"); pages.push(cfg.path + n + "a.jpg", cfg.path + n + "b.jpg"); }
+    const el = document.createElement("div"); el.className = "fb";
+    el.innerHTML = '<div class="fb-book"><div class="fb-base fb-l"></div><div class="fb-base fb-r"></div></div>' +
+      '<div class="fb-ctl"><button type="button" class="fb-btn fb-prev" aria-label="Previous spread">&#8592;</button><span class="fb-count" aria-live="polite"></span><button type="button" class="fb-btn fb-next" aria-label="Next spread">&#8594;</button></div>' +
+      '<p class="fb-hint">Click a page or swipe to turn it</p><p class="fb-rotate">Turn your phone sideways for a bigger view</p>';
+    const bk = el.querySelector(".fb-book"), count = el.querySelector(".fb-count"), prev = el.querySelector(".fb-prev"), next = el.querySelector(".fb-next");
+    const pic = (src) => { const i = new Image(); i.src = src; i.alt = alt; i.decoding = "async"; i.draggable = false; return i; };
+    el.querySelector(".fb-l").appendChild(pic(pages[0])); el.querySelector(".fb-r").appendChild(pic(pages[pages.length - 1]));
+    const N = cfg.count - 1, sheets = [];
+    for (let k = 0; k < N; k++) {
+      const s = document.createElement("div"); s.className = "fb-sheet"; s.style.zIndex = N - k;
+      const f = document.createElement("div"); f.className = "fb-face fb-front"; f.appendChild(pic(pages[2 * k + 1]));
+      const b = document.createElement("div"); b.className = "fb-face fb-back"; b.appendChild(pic(pages[2 * k + 2]));
+      s.append(f, b); bk.appendChild(s); sheets.push(s);
+    }
+    let cur = 0;
+    const show = () => { count.textContent = "Spread " + (cur + 1) + " / " + cfg.count; prev.disabled = cur === 0; next.disabled = cur === N; };
+    const go = (d) => {
+      const fwd = d > 0; if (fwd ? cur >= N : cur <= 0) return;
+      const k = fwd ? cur : cur - 1, s = sheets[k];
+      s.style.zIndex = 1000; s.classList.toggle("is-flipped", fwd); cur += fwd ? 1 : -1; show();
+      clearTimeout(s._t); s._t = setTimeout(() => { s.style.zIndex = s.classList.contains("is-flipped") ? k + 1 : N - k; }, 820);
+    };
+    prev.addEventListener("click", () => go(-1)); next.addEventListener("click", () => go(1));
+    let sx = null;
+    bk.addEventListener("pointerdown", (e) => { sx = e.clientX; });
+    bk.addEventListener("pointerup", (e) => {
+      if (sx === null) return; const dx = e.clientX - sx; sx = null;
+      if (Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); return; }
+      const r = bk.getBoundingClientRect(); go(e.clientX > r.left + r.width / 2 ? 1 : -1);
+    });
+    show(); turn = go;
+    return el;
   };
   const shut = () => {
     if (!m.classList.contains("is-open")) return;
-    m.classList.remove("is-open"); inner.textContent = ""; // clearing also stops any playing video
+    m.classList.remove("is-open"); inner.textContent = ""; turn = null; // clearing also stops any playing video
     document.documentElement.style.overflow = ""; dispatchEvent(new Event("site:video-close"));
     if (last) last.focus({ preventScroll: true });
   };
@@ -313,14 +353,19 @@
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
       e.preventDefault(); last = a;
       title.textContent = data[id].name; build(data[id]);
-      m.classList.toggle("pj-solo", id.startsWith("yt-"));
+      const isBook = data[id].mods.some((x) => x[0] === "b");
+      m.classList.toggle("pj-solo", id.startsWith("yt-") || isBook); m.classList.toggle("pj-book", isBook);
       m.classList.add("is-open"); body.scrollTop = 0; document.documentElement.style.overflow = "hidden";
-      dispatchEvent(new Event("site:video-open"));
+      if (data[id].mods.some((x) => x[0] === "v")) dispatchEvent(new Event("site:video-open")); // only videos pause the music
       history.pushState({ pj: 1 }, ""); pushed = true; // the phone's back button closes the project, not the site
       closeBtn.focus();
     });
   });
   closeBtn.addEventListener("click", close);
-  addEventListener("keydown", (e) => { if (e.key === "Escape" && m.classList.contains("is-open")) close(); });
+  addEventListener("keydown", (e) => {
+    if (!m.classList.contains("is-open")) return;
+    if (e.key === "Escape") close();
+    else if (turn && (e.key === "ArrowRight" || e.key === "ArrowLeft")) { e.preventDefault(); turn(e.key === "ArrowRight" ? 1 : -1); }
+  });
   addEventListener("popstate", () => { if (m.classList.contains("is-open")) { pushed = false; shut(); } });
 })();

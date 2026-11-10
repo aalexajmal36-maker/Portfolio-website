@@ -1,5 +1,5 @@
 // Project contents shown in the on-site viewer, keyed by Behance project id.
-// i = image, g = small images in a grid, t = text, v = video player address. Images stay on Behance's image server.
+// i = image, g = small images in a grid, t = text, v = video player address, b = page-turn book of local spreads. Images stay on Behance's image server.
 window.PROJECT_IMG = "https://mir-s3-cdn-cf.behance.net/project_modules/";
 window.PROJECTS = {
   "249796087": { name: "Brand Identity & Design System — Wiom Consumer App", mods: [
@@ -19,16 +19,7 @@ window.PROJECTS = {
     ["v", "https://www.youtube-nocookie.com/embed/N1xbVo_2bxg?rel=0"]
   ] },
   "201125551": { name: "Brand Identity Guidelines — Sports Visual Identity", mods: [
-    ["i", "1400/d5353f201125551.666ebe03b8512.jpg"], ["i", "1400/23ae1f201125551.666ebe03b8ca6.jpg"], ["i", "1400/abb59b201125551.666ebe03ba89a.jpg"],
-    ["i", "1400/a4c6c4201125551.666ebe03b946e.jpg"], ["i", "1400/dd3a58201125551.666ebe03bc3d1.jpg"], ["i", "1400/290ead201125551.666ebe03bb518.jpg"],
-    ["i", "1400/3d4733201125551.666ebe03b7d14.jpg"], ["i", "1400/26b3cc201125551.666ebe03bd280.jpg"], ["i", "1400/dceabc201125551.666ebe03bd70e.jpg"],
-    ["i", "1400/7652d4201125551.666ebe03baff5.jpg"], ["i", "1400/dcf7a7201125551.666ebe03bbf17.jpg"], ["i", "1400/2f4528201125551.666ebe03c050c.jpg"],
-    ["i", "1400/2fdc56201125551.666ebe03beb11.png"], ["i", "1400/622ad7201125551.666ebe03c1bda.jpg"], ["i", "1400/7ad219201125551.666ebe03b9965.jpg"],
-    ["i", "1400/2dc3a3201125551.666ebe03bcc02.jpg"], ["i", "1400/e9979f201125551.666ebe03bde75.jpg"], ["i", "1400/fc075e201125551.666ebe03c1437.jpg"],
-    ["i", "1400/287350201125551.666ebe03ba0fd.jpg"], ["i", "1400/06a336201125551.666ebe03bba33.jpg"], ["i", "1400/fd1fd2201125551.666ebe03c2098.jpg"],
-    ["i", "1400/1f38a0201125551.666ebe03bef98.jpg"], ["i", "1400/f3b219201125551.666ebe03c28c8.jpg"], ["i", "1400/01f35b201125551.666ebe03c0069.jpg"],
-    ["i", "1400/e74ff0201125551.666ebe03be31c.jpg"], ["i", "max_1200/73a1c8201125551.666ebe03c0c59.png"], ["i", "1400/650c0b201125551.666ebe03bf70b.jpg"],
-    ["i", "1400/804a0b201125551.666ebe03bfbd5.jpg"]
+    ["b", { count: 13, path: "img/conflict/c" }]
   ] },
   "214231951": { name: "Synfo — IT Services Logo Animation | Motion Identity", mods: [
     ["t", "Synfo combines experience to deliver comprehensive IT solutions for Australian businesses. Offering a fixed-price model, Synfo ensures transparent, long-term cost management and reliable issue resolution. With certified cloud specialists, it empowers modern workplaces through smart cloud integrations, strong provider partnerships, and a commitment to future-ready technology."],
