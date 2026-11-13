@@ -486,3 +486,16 @@
 @media (prefers-reduced-motion:reduce){.fb-sheet{transition:none}}
 .fb-hint,.fb-rotate{text-align:center;padding:0 16px}
 @media (max-height:500px){.pj-modal.pj-book .pj-inner{width:min(100%,calc((100vh - 120px) * 2.83));padding:8px 16px}.fb{gap:8px}.fb-hint{display:none}.fb-btn{width:36px;height:36px}}
+/* ---------- hero video fades into the black ideas section (no hard edge) ---------- */
+.hero .hero-shade{z-index:1;background:linear-gradient(0deg,#000 0,rgba(0,0,0,.92) 8%,rgba(0,0,0,.55) 20%,rgba(0,0,0,0) 40%,rgba(0,0,0,0) 84%,rgba(0,0,0,.35) 100%)}
+.statement-text:before{content:"";position:absolute;left:0;right:0;top:0;height:18vh;z-index:1;pointer-events:none;background:linear-gradient(#000,rgba(0,0,0,0))}
+/* ---------- ideas statement split left / right around the astronaut ---------- */
+.statement-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(200px,30vw,520px);align-items:start;text-align:left;text-shadow:0 2px 6px rgba(0,0,0,.6),0 4px 28px rgba(0,0,0,.75)}
+.statement-split p{white-space:normal!important}
+.statement-split .st-left p + p{margin-top:.35em}
+.statement-split .st-right{text-align:right;align-self:end;margin-top:2.2em}
+.statement-split .image{text-shadow:none}
+@media (max-width:767px){
+  .statement-split{grid-template-columns:1fr;row-gap:38vh}
+  .statement-split .st-right{margin-top:0}
+}
