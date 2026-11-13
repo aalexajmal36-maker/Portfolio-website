@@ -499,3 +499,13 @@
   .statement-split{grid-template-columns:1fr;row-gap:38vh}
   .statement-split .st-right{margin-top:0}
 }
+/* ---------- hero video controls: play/pause + sound, grouped bottom-right ---------- */
+.hero-ctrls{position:absolute;z-index:3;right:20px;bottom:40px;display:flex;align-items:center;gap:10px}
+.hero-ctrls .hero-sound{position:static}
+.hero-play{display:grid;place-items:center;width:46px;height:46px;padding:0;border:0;border-radius:50%;background:#dafd2c;color:#0a0a0a;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .15s,filter .15s}
+.hero-play:hover{filter:brightness(.95)}.hero-play:active{transform:scale(.95)}
+.hero-play:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hero-play svg{width:18px;height:18px}
+.hero-play .ico-play,.hero-play[aria-pressed="false"] .ico-pause{display:none}
+.hero-play[aria-pressed="false"] .ico-play{display:block}
+@media (min-width:768px){.hero-ctrls{right:32px}}

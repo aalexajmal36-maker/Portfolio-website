@@ -11,23 +11,27 @@ window.loadYTApi = window.loadYTApi || (() => {
 // Hero: full-bleed YouTube video, always starts muted and loops. The Sound button turns its audio on/off;
 // while it is muted the retro music (Road So Far turntable) plays at 10%, with sound on the music pauses.
 (() => {
-  const box = document.getElementById("heroVideo"), slot = document.getElementById("heroVideoSlot"), btn = document.getElementById("heroSound");
+  const box = document.getElementById("heroVideo"), slot = document.getElementById("heroVideoSlot"), btn = document.getElementById("heroSound"), pbtn = document.getElementById("heroPlay");
   if (!box || !slot || !btn) return;
   const ID = "MkWjn_86pGU";
-  let p = null, ready = false, sound = false, visible = true, heldByVideo = false;
+  let p = null, ready = false, sound = false, paused = false, visible = true, heldByVideo = false, audible = false;
   const label = () => {
     btn.setAttribute("aria-pressed", sound); btn.setAttribute("aria-label", sound ? "Turn video sound off" : "Turn video sound on");
     btn.querySelector("span").textContent = sound ? "Sound on" : "Sound off";
+    if (pbtn) { pbtn.setAttribute("aria-pressed", !paused); pbtn.setAttribute("aria-label", paused ? "Play video" : "Pause video"); }
   };
   const apply = () => {
     if (!ready) return;
     try {
       if (sound) { p.unMute(); p.setVolume(100); } else p.mute();
-      if (sound || visible) p.playVideo(); else p.pauseVideo();
+      if (!paused && (sound || visible)) p.playVideo(); else p.pauseVideo();
     } catch (e) {}
   };
-  const setSound = (on, tell = true) => { sound = on; label(); apply(); if (tell) dispatchEvent(new CustomEvent("site:hero-sound", { detail: { on } })); };
+  // the retro music listens for this: it pauses only while the hero video is actually heard (sound on and playing)
+  const tellMusic = () => { const now = sound && !paused; if (now !== audible) { audible = now; dispatchEvent(new CustomEvent("site:hero-sound", { detail: { on: now } })); } };
+  const setSound = (on, tell = true) => { sound = on; label(); apply(); if (tell) tellMusic(); else audible = sound && !paused; };
   btn.addEventListener("click", () => setSound(!sound));
+  if (pbtn) pbtn.addEventListener("click", () => { paused = !paused; label(); apply(); tellMusic(); });
   // another video opened on the site: silence the hero, restore it when that video closes
   addEventListener("site:video-open", () => { if (sound) { heldByVideo = true; setSound(false, false); } });
   addEventListener("site:video-close", () => { if (heldByVideo) { heldByVideo = false; setSound(true, false); } });
