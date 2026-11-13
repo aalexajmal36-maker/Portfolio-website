@@ -517,3 +517,12 @@
 .statement a.image:focus-visible{outline:2px solid #dafd2c;outline-offset:3px}
 /* hero video: shown untouched at the top; its bottom fades to black only as you scroll away (--hero-fade set in site.js) */
 .hero .hero-shade{opacity:var(--hero-fade,0);background:linear-gradient(0deg,#000 0,rgba(0,0,0,.9) 10%,rgba(0,0,0,.6) 24%,rgba(0,0,0,.25) 40%,rgba(0,0,0,0) 60%)}
+/* "Explore" cue + line in black over the light video; it fades out as the video fades to black on scroll */
+.hero .scroll-cue{color:#0a0a0a;opacity:calc(1 - var(--hero-fade,0))}
+.hero .scroll-cue i{background:linear-gradient(#0a0a0a,transparent)}
+/* tap anywhere on the video to pause / play it; a short icon confirms the action */
+.hero-tap{position:absolute;inset:0;z-index:2;cursor:pointer}
+.hero-tap:after{content:"";position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:rgba(0,0,0,.55) center/34px no-repeat;opacity:0;transform:scale(.8);transition:opacity .35s,transform .35s;pointer-events:none}
+.hero-tap.show-pause:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dafd2c'%3E%3Crect x='6' y='5' width='4' height='14' rx='1'/%3E%3Crect x='14' y='5' width='4' height='14' rx='1'/%3E%3C/svg%3E")}
+.hero-tap.show-play:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dafd2c'%3E%3Cpath d='M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z'/%3E%3C/svg%3E")}
+.hero-tap.flash:after{opacity:1;transform:scale(1)}

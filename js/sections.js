@@ -32,6 +32,16 @@ window.loadYTApi = window.loadYTApi || (() => {
   const setSound = (on, tell = true) => { sound = on; label(); apply(); if (tell) tellMusic(); else audible = sound && !paused; };
   btn.addEventListener("click", () => setSound(!sound));
   if (pbtn) pbtn.addEventListener("click", () => { paused = !paused; label(); apply(); tellMusic(); });
+  // tap/click anywhere on the video toggles pause / play (YouTube's own centre controls can't be clicked through the page)
+  const tap = document.getElementById("heroTap");
+  if (tap && pbtn) {
+    let ft = 0;
+    tap.addEventListener("click", () => {
+      pbtn.click();
+      tap.classList.toggle("show-pause", paused); tap.classList.toggle("show-play", !paused);
+      tap.classList.add("flash"); clearTimeout(ft); ft = setTimeout(() => tap.classList.remove("flash"), 650);
+    });
+  }
   // another video opened on the site: silence the hero, restore it when that video closes
   addEventListener("site:video-open", () => { if (sound) { heldByVideo = true; setSound(false, false); } });
   addEventListener("site:video-close", () => { if (heldByVideo) { heldByVideo = false; setSound(true, false); } });
@@ -56,7 +66,7 @@ window.loadYTApi = window.loadYTApi || (() => {
             if (hd()) box.classList.add("is-on");
             else { const t0 = Date.now(), iv = setInterval(() => { if (hd() || Date.now() - t0 > 4000) { clearInterval(iv); box.classList.add("is-on"); } }, 250); }
           }
-          if (e.data === 0) { try { e.target.seekTo(0); e.target.playVideo(); } catch (err) {} }
+          if (e.data === 0) { try { e.target.playVideo(); } catch (err) {} } // the playlist loop restarts it; no seek, so YouTube's overlay doesn't pop up
         }
       }
     });
