@@ -1,3 +1,51 @@
+// Shared loader for the YouTube IFrame API (hero video + background music use it).
+window.loadYTApi = window.loadYTApi || (() => {
+  let p;
+  return () => p || (p = new Promise((res) => {
+    if (window.YT && YT.Player) return res();
+    const prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
+    const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.async = true; document.head.appendChild(s);
+  }));
+})();
+
+// Hero: full-bleed YouTube video, always starts muted and loops. The Sound button turns its audio on/off;
+// while it is muted the retro music (Road So Far turntable) plays at 10%, with sound on the music pauses.
+(() => {
+  const box = document.getElementById("heroVideo"), slot = document.getElementById("heroVideoSlot"), btn = document.getElementById("heroSound");
+  if (!box || !slot || !btn) return;
+  const ID = "MkWjn_86pGU";
+  let p = null, ready = false, sound = false, visible = true, heldByVideo = false;
+  const label = () => {
+    btn.setAttribute("aria-pressed", sound); btn.setAttribute("aria-label", sound ? "Turn video sound off" : "Turn video sound on");
+    btn.querySelector("span").textContent = sound ? "Sound on" : "Sound off";
+  };
+  const apply = () => {
+    if (!ready) return;
+    try {
+      if (sound) { p.unMute(); p.setVolume(100); } else p.mute();
+      if (sound || visible) p.playVideo(); else p.pauseVideo();
+    } catch (e) {}
+  };
+  const setSound = (on, tell = true) => { sound = on; label(); apply(); if (tell) dispatchEvent(new CustomEvent("site:hero-sound", { detail: { on } })); };
+  btn.addEventListener("click", () => setSound(!sound));
+  // another video opened on the site: silence the hero, restore it when that video closes
+  addEventListener("site:video-open", () => { if (sound) { heldByVideo = true; setSound(false, false); } });
+  addEventListener("site:video-close", () => { if (heldByVideo) { heldByVideo = false; setSound(true, false); } });
+  // save work while the hero is off screen (only when muted)
+  new IntersectionObserver((es) => { visible = es[0].isIntersecting; apply(); }, { threshold: 0.05 }).observe(box);
+  label();
+  window.loadYTApi().then(() => {
+    p = new YT.Player(slot, {
+      host: "https://www.youtube-nocookie.com", videoId: ID, width: 1280, height: 720,
+      playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: ID, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
+      events: {
+        onReady: (e) => { ready = true; const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Showreel"; } e.target.mute(); apply(); },
+        onStateChange: (e) => { if (e.data === 1) box.classList.add("is-on"); if (e.data === 0) { try { e.target.seekTo(0); e.target.playVideo(); } catch (err) {} } }
+      }
+    });
+  }).catch(() => {});
+})();
+
 // Key Skills sticker wall: staggered layout, slap-in on view, drag, shuffle.
 (() => {
   const wall = document.getElementById("stickerWallG");
@@ -89,11 +137,7 @@
     if (on) pending = false;
     if (ytReady) { try { on ? yt.playVideo() : yt.pauseVideo(); } catch (e) {} }
   };
-  const loadYT = () => new Promise((res) => {
-    if (window.YT && YT.Player) return res();
-    const prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
-    const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.async = true; document.head.appendChild(s);
-  });
+  const loadYT = window.loadYTApi;
   const startMusic = () => {
     const box = document.createElement("div"); box.className = "xp-music"; box.setAttribute("aria-hidden", "true");
     const slot = document.createElement("div"); box.appendChild(slot); document.body.appendChild(box);
@@ -104,7 +148,7 @@
         playerVars: { autoplay: 1, loop: 1, playlist: MUSIC, controls: 0, disablekb: 1, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
         events: {
           onReady: (e) => {
-            ytReady = true; e.target.setVolume(55); const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Background music"; }
+            ytReady = true; e.target.setVolume(10); const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Background music"; }
             if (playing) e.target.playVideo(); else e.target.pauseVideo();
             // the browser blocked sound before any click: show the deck as paused and start on the first click/key anywhere
             setTimeout(() => { if (playing && yt.getPlayerState() !== 1) { setPlay(false); pending = true; } }, 2000);
@@ -124,6 +168,12 @@
   // pause the music while a Brand Ads video is open, resume after
   addEventListener("site:video-open", () => { if (playing) { held = true; setPlay(false); } });
   addEventListener("site:video-close", () => { if (held) { held = false; setPlay(true); } });
+  // the hero video with sound on replaces the retro music; muting it again brings the music back
+  let heldBySound = false;
+  addEventListener("site:hero-sound", (e) => {
+    if (e.detail && e.detail.on) { if (playing) { heldBySound = true; setPlay(false); } }
+    else if (heldBySound) { heldBySound = false; setPlay(true); }
+  });
   play.addEventListener("click", () => setPlay(!playing));
   tracks.forEach((t) => t.addEventListener("click", () => pick(+t.dataset.i)));
   const angleOf = (e) => { const b = rec.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
