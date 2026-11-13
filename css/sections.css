@@ -511,10 +511,9 @@
 @media (min-width:768px){.hero-ctrls{right:32px}}
 /* hero video quality: YouTube picks resolution from the player's pixel size, so render it at 2x and scale down (forces HD instead of 360p on phones) */
 .hero-video iframe{width:200vw;height:112.5vw;min-width:355.56svh;min-height:200svh;transform:translate(-50%,-50%) scale(.5)}
-/* ideas statement: project thumbnails as full, unrotated rectangles that open the project */
-.statement .image.image-rect{width:1.15em;height:.9em;margin:0 .14em;border-radius:0;transform:none;vertical-align:-.1em;cursor:pointer;outline:2px solid transparent;outline-offset:3px;box-shadow:0 6px 22px rgba(0,0,0,.55);transition:transform .3s cubic-bezier(.16,1,.3,1),outline-color .2s}
-.statement span:hover>.image.image-rect{width:1.15em;transform:none}
-.statement .image.image-rect:hover,.statement .image.image-rect:focus-visible{transform:scale(1.1);outline-color:#dafd2c}
-.statement .image.image-rect img{object-fit:cover}
+/* ideas statement: project thumbnails keep their original tilted, rounded look and open the project on click */
+.statement a.image{cursor:pointer}
+.statement a.image:hover,.statement a.image:focus-visible{width:2.6em;transform:rotate(0)}
+.statement a.image:focus-visible{outline:2px solid #dafd2c;outline-offset:3px}
 /* hero video: shown untouched at the top; its bottom fades to black only as you scroll away (--hero-fade set in site.js) */
 .hero .hero-shade{opacity:var(--hero-fade,0);background:linear-gradient(0deg,#000 0,rgba(0,0,0,.9) 10%,rgba(0,0,0,.6) 24%,rgba(0,0,0,.25) 40%,rgba(0,0,0,0) 60%)}
