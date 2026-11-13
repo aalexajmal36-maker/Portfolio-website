@@ -509,3 +509,5 @@
 .hero-play .ico-play,.hero-play[aria-pressed="false"] .ico-pause{display:none}
 .hero-play[aria-pressed="false"] .ico-play{display:block}
 @media (min-width:768px){.hero-ctrls{right:32px}}
+/* hero video quality: YouTube picks resolution from the player's pixel size, so render it at 2x and scale down (forces HD instead of 360p on phones) */
+.hero-video iframe{width:200vw;height:112.5vw;min-width:355.56svh;min-height:200svh;transform:translate(-50%,-50%) scale(.5)}

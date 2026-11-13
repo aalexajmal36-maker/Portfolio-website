@@ -44,7 +44,15 @@ window.loadYTApi = window.loadYTApi || (() => {
       playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: ID, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
       events: {
         onReady: (e) => { ready = true; const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Showreel"; } e.target.mute(); apply(); },
-        onStateChange: (e) => { if (e.data === 1) box.classList.add("is-on"); if (e.data === 0) { try { e.target.seekTo(0); e.target.playVideo(); } catch (err) {} } }
+        // keep the sharp thumbnail up until YouTube has switched to an HD stream (or 4s have passed), so the blurry start never shows
+        onStateChange: (e) => {
+          if (e.data === 1 && !box.classList.contains("is-on")) {
+            const hd = () => /hd|highres/.test(e.target.getPlaybackQuality ? e.target.getPlaybackQuality() : "");
+            if (hd()) box.classList.add("is-on");
+            else { const t0 = Date.now(), iv = setInterval(() => { if (hd() || Date.now() - t0 > 4000) { clearInterval(iv); box.classList.add("is-on"); } }, 250); }
+          }
+          if (e.data === 0) { try { e.target.seekTo(0); e.target.playVideo(); } catch (err) {} }
+        }
       }
     });
   }).catch(() => {});
