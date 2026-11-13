@@ -21,6 +21,15 @@
   // hero "explore" cue scrolls to the next section
   const cue = document.querySelector(".scroll-cue");
   if (cue) cue.addEventListener("click", () => { const n = document.querySelector(".hero").nextElementSibling; if (n) n.scrollIntoView({ behavior: "smooth" }); });
+
+  // hero video stays untouched at the top; its bottom edge eases into black as you scroll toward the ideas section
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    let tick = 0;
+    const fade = () => { tick = 0; const p = Math.min(1, Math.max(0, scrollY / (hero.offsetHeight * 0.45))); hero.style.setProperty("--hero-fade", (p * p * (3 - 2 * p)).toFixed(3)); };
+    addEventListener("scroll", () => { if (!tick) tick = requestAnimationFrame(fade); }, { passive: true });
+    addEventListener("resize", fade); fade();
+  }
 })();
 
 

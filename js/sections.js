@@ -9,7 +9,7 @@ window.loadYTApi = window.loadYTApi || (() => {
 })();
 
 // Hero: full-bleed YouTube video, always starts muted and loops. The Sound button turns its audio on/off;
-// while it is muted the retro music (Road So Far turntable) plays at 10%, with sound on the music pauses.
+// the retro music only plays when started from the Road So Far turntable (10% volume); it pauses while the video has sound on.
 (() => {
   const box = document.getElementById("heroVideo"), slot = document.getElementById("heroVideoSlot"), btn = document.getElementById("heroSound"), pbtn = document.getElementById("heroPlay");
   if (!box || !slot || !btn) return;
@@ -153,29 +153,21 @@ window.loadYTApi = window.loadYTApi || (() => {
   const startMusic = () => {
     const box = document.createElement("div"); box.className = "xp-music"; box.setAttribute("aria-hidden", "true");
     const slot = document.createElement("div"); box.appendChild(slot); document.body.appendChild(box);
-    setPlay(true);
+    setPlay(false); // the music never starts on its own; only the turntable (Play button, tap on the record) starts it
     loadYT().then(() => {
       yt = new YT.Player(slot, {
         host: "https://www.youtube-nocookie.com", videoId: MUSIC, width: 200, height: 200,
-        playerVars: { autoplay: 1, loop: 1, playlist: MUSIC, controls: 0, disablekb: 1, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
+        playerVars: { autoplay: 0, loop: 1, playlist: MUSIC, controls: 0, disablekb: 1, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
         events: {
           onReady: (e) => {
             ytReady = true; e.target.setVolume(10); const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Background music"; }
             if (playing) e.target.playVideo(); else e.target.pauseVideo();
-            // the browser blocked sound before any click: show the deck as paused and start on the first click/key anywhere
-            setTimeout(() => { if (playing && yt.getPlayerState() !== 1) { setPlay(false); pending = true; } }, 2000);
           },
           onStateChange: (e) => { if (e.data === 1 && !playing && !drag) yt.pauseVideo(); }
         }
       });
     }).catch(() => {});
   };
-  const firstGesture = (e) => {
-    if (!pending) return;
-    if (e.target && e.target.closest && e.target.closest("#xpPlay,#xpRecord,.vg-tile")) { pending = false; return; }
-    setPlay(true);
-  };
-  addEventListener("pointerdown", firstGesture, true); addEventListener("keydown", firstGesture, true);
   if (document.readyState === "complete") startMusic(); else addEventListener("load", startMusic, { once: true });
   // pause the music while a Brand Ads video is open, resume after
   addEventListener("site:video-open", () => { if (playing) { held = true; setPlay(false); } });
