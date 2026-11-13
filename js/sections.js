@@ -38,14 +38,19 @@ window.loadYTApi = window.loadYTApi || (() => {
   // save work while the hero is off screen (only when muted)
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; apply(); }, { threshold: 0.05 }).observe(box);
   label();
+  const noCaptions = (pl) => { try { const t = pl.getOption("captions", "track"); if (t && t.languageCode) pl.setOption("captions", "track", {}); } catch (e) {} try { pl.unloadModule("captions"); pl.unloadModule("cc"); } catch (e) {} };
+  setInterval(() => { if (ready && !paused) noCaptions(p); }, 1500); // YouTube can switch auto-captions back on mid-play
   window.loadYTApi().then(() => {
     p = new YT.Player(slot, {
       host: "https://www.youtube-nocookie.com", videoId: ID, width: 1280, height: 720,
-      playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: ID, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1 },
+      // no captions: YouTube auto-turns on subtitles (e.g. Hindi) from the viewer's language unless the caption module is switched off
+      playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: ID, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1, cc_load_policy: 0, cc_lang_pref: "en", hl: "en" },
       events: {
-        onReady: (e) => { ready = true; const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Showreel"; } e.target.mute(); apply(); },
+        onReady: (e) => { ready = true; const f = e.target.getIframe(); if (f) { f.setAttribute("tabindex", "-1"); f.title = "Showreel"; } e.target.mute(); noCaptions(e.target); apply(); },
+        onApiChange: (e) => noCaptions(e.target),
         // keep the sharp thumbnail up until YouTube has switched to an HD stream (or 4s have passed), so the blurry start never shows
         onStateChange: (e) => {
+          if (e.data === 1) noCaptions(e.target);
           if (e.data === 1 && !box.classList.contains("is-on")) {
             const hd = () => /hd|highres/.test(e.target.getPlaybackQuality ? e.target.getPlaybackQuality() : "");
             if (hd()) box.classList.add("is-on");
