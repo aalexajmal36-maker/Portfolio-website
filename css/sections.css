@@ -536,3 +536,13 @@
   .hero .scroll-cue i{height:22px}
 }
 @media (max-aspect-ratio:4/5){.hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:18px;z-index:1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0),#000)}}
+/* phones: the strip under the video is black, so the video's dark bottom edge flows straight into it and on into the ideas section */
+@media (max-aspect-ratio:4/5){
+  .hero{background:#000}
+  .hero-video{background:url(https://i.ytimg.com/vi/MkWjn_86pGU/maxresdefault.jpg) center 76px/100% auto no-repeat,linear-gradient(#fff 0,#fff calc(76px + 50vw),#000 calc(76px + 56.25vw))}
+  .hero:after{display:none}
+  .hero .scroll-cue{color:#fff;opacity:1}
+  .hero .scroll-cue i{background:linear-gradient(#fff,transparent)}
+}
+/* phones: push "Hello" clear of the tilted running strip above the About section */
+@media (max-width:767px){.about-ajmal{padding-top:72px}}
