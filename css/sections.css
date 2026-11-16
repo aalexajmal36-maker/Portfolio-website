@@ -526,3 +526,13 @@
 .hero-tap.show-pause:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dafd2c'%3E%3Crect x='6' y='5' width='4' height='14' rx='1'/%3E%3Crect x='14' y='5' width='4' height='14' rx='1'/%3E%3C/svg%3E")}
 .hero-tap.show-play:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dafd2c'%3E%3Cpath d='M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z'/%3E%3C/svg%3E")}
 .hero-tap.flash:after{opacity:1;transform:scale(1)}
+/* phones / portrait: show the whole 16:9 video (no side crop) on white that matches its background, and shrink the hero to fit */
+@media (max-aspect-ratio:4/5){
+  .hero{height:calc(56.25vw + 180px);min-height:0}
+  .hero-video{background:#fff url(https://i.ytimg.com/vi/MkWjn_86pGU/maxresdefault.jpg) center 76px/100% auto no-repeat}
+  .hero-video iframe{top:calc(76px + 28.125vw);width:200vw;height:112.5vw;min-width:0;min-height:0}
+  .hero-ctrls{bottom:22px}
+  .hero .scroll-cue{bottom:22px}
+  .hero .scroll-cue i{height:22px}
+}
+@media (max-aspect-ratio:4/5){.hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:18px;z-index:1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0),#000)}}
